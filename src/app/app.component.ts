@@ -125,6 +125,7 @@ export class AppComponent implements OnInit{
               ]
             }
          });
+
          document.getElementById("closeModal").click();
          this.isLoading.next(false)
          serverForm.reset();
@@ -139,6 +140,7 @@ export class AppComponent implements OnInit{
       }),
       catchError((error: string) => {
         this.isLoading.next(false)
+        console.log("Errr Accured : ", error);
         return of({
           dataState: DataState.ERROR_STATE,
           error
