@@ -41,9 +41,12 @@ export class AppComponent implements OnInit{
       .pipe(
         map(response => {
           this.dataSubject.next(response);
+          console.log("Server State is : ", response);
+
+  
           return {
             dataState: DataState.LOADED_STATE,
-            appData: response
+            appData: { ...response, data: { servers: response.data.servers.reverse() } }
           };
         }),
         startWith({
@@ -147,6 +150,40 @@ export class AppComponent implements OnInit{
         });
       })
     )
+  }
+
+  deleteServer(server_id: number): void {
+    this.isLoading.next(true);
+    this.appState$ = this.serverService.delete$(server_id)
+    .pipe(
+      map(response => {
+        
+        return {
+          dataState: DataState.LOADED_STATE,
+          appData: {
+            ...this.dataSubject.value,
+            data: {
+              servers: [
+                ...this.dataSubject.value.data.servers.filter(server => server.id !== server_id)
+              ]
+            }
+          }
+        };
+        
+      }),
+      startWith({
+        dataState: DataState.LOADED_STATE,
+        appData: this.dataSubject.value
+      }),
+      catchError((error: string) => {
+        this.pingSubject.next('')
+        return of({
+          dataState: DataState.ERROR_STATE,
+          error
+        });
+      })
+    );
+         
   }
 
 

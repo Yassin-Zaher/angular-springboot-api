@@ -67,7 +67,9 @@
                       </a>
                   </td>
                   <td>
-                    <a style="cursor: pointer;"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+                    <a (click)="deleteServer(server.id)" class="delete" data-toggle="modal"
+                                      style="cursor: pointer;"><i class="material-icons" data-toggle="tooltip"
+                                          title="Delete">&#xE872;</i></a>
                   </td>
                 </tr>
               </tbody>
